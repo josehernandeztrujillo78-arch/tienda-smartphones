@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Motorola | Smartphones</title>
+
+  <!-- ===== BOOTSTRAP ===== -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f7f2.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* ===================================================
+       🌟 ESTILOS GENERALES
+       =================================================== */
+    body {
+      background: #f8f9fa;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #212529;
+    }
+
+    /* ===================================================
+       🔺 HEADER
+       =================================================== */
+    header.custom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #b71c1c;
+      color: #fff;
+      padding: 15px 30px;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+    }
+
+    header img.logo {
+      width: 55px;
+      border-radius: 10px;
+    }
+
+    .cart {
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      transition: color 0.2s;
+    }
+    .cart:hover {
+      color: #ffe7e7;
+    }
+
+    /* ===================================================
+       📱 PRODUCTOS
+       =================================================== */
+    #products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .img-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      transition: transform 0.3s;
+      display: block;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.06);
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 12px;
+      opacity: 0;
+      transform: translateY(100%);
+      pointer-events: none;
+      transition: all 0.4s;
+    }
+
+    .img-wrapper:hover .overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-body {
+      text-align: center;
+      padding: 15px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .price {
+      color: #b71c1c;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* ===================================================
+       🛒 CARRITO (OFFCANVAS)
+       =================================================== */
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 10px;
+    }
+
+    .cart-item h5 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+      margin: 0;
+    }
+
+    /* ===== CONTROLES DE CANTIDAD ===== */
+    .cart-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .qty-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      border: 1.5px solid #ccc;
+      background-color: #f8f9fa;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .qty-btn:hover {
+      background-color: #e9ecef;
+      transform: scale(1.1);
+    }
+
+    .qty-display {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #212529;
+      min-width: 35px;
+      text-align: center;
+    }
+
+    .delete-btn {
+      border: 2px solid #dc3545;
+      color: #dc3545;
+      background: transparent;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.25s;
+    }
+
+    .delete-btn:hover {
+      background: #dc3545;
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    /* ===== TOTAL ===== */
+    .cart-total {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #111;
+      border-top: 1px solid #e9ecef;
+      padding-top: 12px;
+      margin-bottom: 20px;
+    }
+
+    /* ===== BOTONES DE ACCIÓN ===== */
+    .btn-vaciar,
+    .btn-finalizar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 13px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: all 0.25s ease-in-out;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin-bottom: 10px;
+    }
+
+    .btn-vaciar {
+      background: linear-gradient(145deg, #c62828, #b71c1c);
+    }
+    .btn-vaciar:hover {
+      background: linear-gradient(145deg, #b71c1c, #8f1414);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(183, 28, 28, 0.35);
+    }
+
+    .btn-finalizar {
+      background: linear-gradient(145deg, #2e7d32, #1b5e20);
+    }
+    .btn-finalizar:hover {
+      background: linear-gradient(145deg, #1b5e20, #144d17);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(27, 94, 32, 0.35);
+    }
+
+    .btn-vaciar i,
+    .btn-finalizar i {
+      font-size: 1.2rem;
+    }
+
+    .logo-carrito {
+      width: 100px;
+      height: 60px; ;
+      border-radius: 5px;
+      vertical-align: middle;
+    }
+
+    /* ===================================================
+       ⚫ FOOTER
+       =================================================== */
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      padding: 20px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+  
+  </style>
+</head>
+<body>
+  <!-- ===== ENCABEZADO ===== -->
+  <header class="custom-header">
+    <h1><img src="images/motp.jpg" class="logo" alt="Logo tienda"> Motorola - Modelos disponibles</h1>
+    <div class="cart" data-bs-toggle="offcanvas" data-bs-target="#cartPanel">
+      <i class="fa-solid fa-cart-shopping"></i> Carrito (<span id="cart-count">0</span>)
+    </div>
+  </header>
+
+  <!-- ===== NAVEGACIÓN ===== -->
+  <nav class="text-center my-3">
+    <a href="../index.html" class="btn btn-outline-primary">Inicio</a>
+    <a href="apple.html" class="btn btn-outline-dark"><i class="fa-brands fa-apple"></i> Apple</a>
+    <a href="samsung.html" class="btn btn-outline-primary"><i class="fa-solid fa-mobile-screen"></i> Samsung</a>
+    <a href="motorola.html" class="btn btn-danger"><i class="fa-solid fa-phone"></i> Motorola</a>
+    <a href="xiaomi.html" class="btn btn-outline-warning"><i class="fa-solid fa-bolt"></i> Xiaomi</a>
+  </nav>
+
+  <!-- ===== PRODUCTOS ===== -->
+  <main class="container my-5">
+    <h2><i class="fa-solid fa-phone"></i> Modelos Motorola</h2>
+    <section id="products-container">
+      <!-- productos generados dinámicamente -->
+    </section>
+  </main>
+
+  <!-- ===== CARRITO ===== -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="cartPanel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" ><img src="images/carrito.jpg" alt="logo carrito" class="logo-carrito"> Tu carrito</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul id="cart-items" class="list-unstyled"></ul>
+      <p id="total-price" class="fw-bold mt-3">Total: $0.00</p>
+
+      <button class="btn-vaciar" onclick="clearCart()">
+        <i class="bi bi-trash3"></i> Vaciar carrito
+      </button>
+      <button class="btn-finalizar" onclick="window.location.href='pago.html'">
+        <i class="bi bi-bag-check"></i> Finalizar compra
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>© 2025 Tienda Smartphones - Todos los derechos reservados.</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
